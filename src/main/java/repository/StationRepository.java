@@ -1,5 +1,6 @@
 package repository;
 
+import model.Language;
 import repository.dao.StationDao;
 import repository.dto.StationDto;
 import java.util.List;
@@ -11,8 +12,8 @@ public class StationRepository implements Repository<Integer, StationDto> {
 
     private final StationDao dao;
 
-    public StationRepository() {
-        this.dao = StationDao.getInstance();
+    public StationRepository(Language language) {
+        this.dao = StationDao.getInstance(language);
     }
 
     public StationRepository(StationDao dao) {

@@ -1,5 +1,6 @@
 package repository.dao;
 
+import model.Language;
 import repository.RepositoryException;
 import repository.dto.StationDto;
 import java.sql.*;
@@ -12,14 +13,17 @@ import java.util.List;
  */
 public class StationDao implements Dao<Integer, StationDto> {
 
-    private Connection connexion;
+    private final Connection connexion;
 
-    private StationDao() throws RepositoryException {
+    private final Language language;
+
+    private StationDao(Language language) throws RepositoryException {
         connexion = DBManager.getInstance().getConnection();
+        this.language = language;
     }
 
-    public static StationDao getInstance() throws RepositoryException {
-        return StationDaoHolder.getInstance();
+    public static StationDao getInstance(Language language) throws RepositoryException {
+        return StationDaoHolder.getInstance(language);
     }
 
 
@@ -27,6 +31,9 @@ public class StationDao implements Dao<Integer, StationDto> {
     public StationDto get(Integer key) {
         if(key == null) throw new RepositoryException("Station Dao (get) - No key given as a parameter");
         String sql = "SELECT * FROM STATIONS WHERE id=?";
+        if(this.language == Language.NL) {
+            sql = "SELECT * FROM STATIONS_NL WHERE id=?";
+        }
         StationDto dto = null;
         try (PreparedStatement pstmt = connexion.prepareStatement(sql)) {
             pstmt.setInt(1, key);
@@ -52,6 +59,9 @@ public class StationDao implements Dao<Integer, StationDto> {
     public List<StationDto> getAll() {
         List<StationDto> stations = new ArrayList<>();
         String sql = "SELECT * FROM STATIONS;";
+        if(language == Language.NL) {
+            sql = "SELECT * FROM STATIONS_NL;";
+        }
         try {
             Statement stmt = connexion.createStatement();
             ResultSet result = stmt.executeQuery(sql);
@@ -71,8 +81,8 @@ public class StationDao implements Dao<Integer, StationDto> {
      * Singleton pattern for this Dao
      */
     private static class StationDaoHolder {
-        private static StationDao getInstance() throws RepositoryException {
-            return new StationDao();
+        private static StationDao getInstance(Language language) throws RepositoryException {
+            return new StationDao(language);
         }
     }
 

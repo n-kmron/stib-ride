@@ -23,15 +23,15 @@ class ShortcutDaoTest {
     public ShortcutDaoTest() {
         System.out.println("ShortcutRepositoryTest Constructor");
         //Test data
-        s1 = new ShortcutDto(KEY, "DE BROUCKERE", "PARC");
-        s2 = new ShortcutDto("Fake", "GARE CENTRALE", "ART-LOI");
+        s1 = new ShortcutDto(KEY, 8012, 8032);
+        s2 = new ShortcutDto("Fake", 8022, 8042);
 
         all = new ArrayList<>();
         all.add(s1);
-        all.add(new ShortcutDto("s3", "GARE CENTRALE", "MERODE"));
-        all.add(new ShortcutDto("s4", "SAINTE-CATHERINE", "ETANGS NOIRS"));
-        all.add(new ShortcutDto("s5", "BOCKSTAEL", "PANNENHUIS"));
-        all.add(new ShortcutDto("s6", "ROGIER", "MADOU"));
+        all.add(new ShortcutDto("s3", 8022, 8032));
+        all.add(new ShortcutDto("s4", 8272, 8292));
+        all.add(new ShortcutDto("s5", 8794, 8784));
+        all.add(new ShortcutDto("s6", 8432, 8412));
         try {
             ConfigManager.getInstance().load();
             dao = ShortcutDao.getInstance();
@@ -89,7 +89,7 @@ class ShortcutDaoTest {
     public void testInsertExist() throws Exception {
         System.out.println("testInsertExist");
         //Arrange
-        ShortcutDto expected = new ShortcutDto(KEY, "DE BROUCKERE", "PARC");
+        ShortcutDto expected = new ShortcutDto(KEY, 8012, 8032);
         //Assert
         assertThrows(RepositoryException.class, () -> {
             //Action
@@ -101,7 +101,7 @@ class ShortcutDaoTest {
     public void testInsertNotExist() {
         System.out.println("testInsertNotExist");
         //Arrange
-        ShortcutDto expected = new ShortcutDto("NewOne", "MERODE", "PLOPSA");
+        ShortcutDto expected = new ShortcutDto("NewOne", 8072, 1111);
         //Action
         dao.insert(expected);
         ShortcutDto result = dao.get("NewOne");
@@ -126,9 +126,9 @@ class ShortcutDaoTest {
     public void testUpdateExist() {
         System.out.println("testUpdateExist");
         //Arrange
-        ShortcutDto expected = new ShortcutDto("NewOne", "MERODE", "PLOPSA");
+        ShortcutDto expected = new ShortcutDto("NewOne", 8072, 1111);
         //Action
-        expected.setSource("Edited");
+        expected.setSource(898399);
         dao.update(expected);
         ShortcutDto result = dao.get("NewOne");
         //Assert
@@ -139,7 +139,7 @@ class ShortcutDaoTest {
     public void testUpdateNotExist() throws Exception {
         System.out.println("testUpdateNotExist");
         //Arrange
-        ShortcutDto expected = new ShortcutDto("Fake", "IPPO", "MENTALITY");
+        ShortcutDto expected = new ShortcutDto("Fake", 324124, 43253);
         //Assert
         assertThrows(RepositoryException.class, () -> {
             //Action

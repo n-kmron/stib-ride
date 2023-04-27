@@ -10,6 +10,12 @@ CREATE TABLE IF NOT EXISTS `STATIONS` (
                                           PRIMARY KEY(`id`)
     );
 
+CREATE TABLE IF NOT EXISTS `STATIONS_NL` (
+                                             `id`	INTEGER,
+                                             `name`	TEXT NOT NULL,
+                                             PRIMARY KEY(`id`)
+);
+
 CREATE TABLE IF NOT EXISTS `LINES` (
                                        `id`	INTEGER,
                                        PRIMARY KEY(`id`)
@@ -23,6 +29,5 @@ CREATE TABLE IF NOT EXISTS `STOPS` (
     FOREIGN KEY(`id_station`) REFERENCES `STATIONS`(`id`),
     PRIMARY KEY(`id_line`,`id_station`)
     );
-
 
 COMMIT;

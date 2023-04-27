@@ -1,6 +1,7 @@
 package repository.dao;
 
 import config.ConfigManager;
+import model.Language;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import repository.RepositoryException;
@@ -35,7 +36,7 @@ class StationDaoTest {
         all.add(new StationDto(8742, "Beekkant"));
         try {
             ConfigManager.getInstance().load();
-            dao = StationDao.getInstance();
+            dao = StationDao.getInstance(Language.FR);
         } catch (RepositoryException ex) {
             Assertions.fail("Error connecting to test database\n", ex);
         } catch (IOException e) {

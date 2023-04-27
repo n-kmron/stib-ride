@@ -7,12 +7,12 @@ package repository.dto;
 public class ShortcutDto extends Dto<String> {
     private String name;
 
-    private String source;
+    private int source;
 
-    private String destination;
+    private int destination;
 
 
-    public ShortcutDto(String name, String source, String destination) {
+    public ShortcutDto(String name, int source, int destination) {
         this.name = name;
         this.source = source;
         this.destination = destination;
@@ -25,20 +25,16 @@ public class ShortcutDto extends Dto<String> {
 
 
     //getters
-    public String getSource() {
+    public int getSource() {
         return source;
     }
 
-    public String getDestination() {
+    public int getDestination() {
         return destination;
     }
 
-    public void setSource(String source) {
+    public void setSource(int source) {
         this.source = source;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
     }
 
     @Override

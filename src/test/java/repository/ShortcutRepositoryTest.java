@@ -35,15 +35,15 @@ class ShortcutRepositoryTest {
     public ShortcutRepositoryTest() {
         System.out.println("ShortcutRepositoryTest Constructor");
         //Test data
-        s1 = new ShortcutDto(KEY, "DE BROUCKERE", "PARC");
-        s2 = new ShortcutDto("Fake", "GARE CENTRALE", "ART-LOI");
+        s1 = new ShortcutDto(KEY, 8012, 8032);
+        s2 = new ShortcutDto("Fake", 8022, 8042);
 
         all = new ArrayList<>();
         all.add(s1);
-        all.add(new ShortcutDto("s3", "GARE CENTRALE", "MERODE"));
-        all.add(new ShortcutDto("s4", "SAINTE-CATHERINE", "ETANGS NOIRS"));
-        all.add(new ShortcutDto("s5", "BOCKSTAEL", "PANNENHUIS"));
-        all.add(new ShortcutDto("s6", "ROGIER", "MADOU"));
+        all.add(new ShortcutDto("s3", 8022, 8072));
+        all.add(new ShortcutDto("s4", 8272, 8292));
+        all.add(new ShortcutDto("s5", 8794, 8784));
+        all.add(new ShortcutDto("s6", 8432, 8412));
     }
 
     @BeforeEach
@@ -147,7 +147,7 @@ class ShortcutRepositoryTest {
         System.out.println("testAddExist");
         //Arrange
         ShortcutRepository repository = new ShortcutRepository(mock);
-        ShortcutDto myShortcut = new ShortcutDto("Domicile", "MERODE", "PLOPSA");
+        ShortcutDto myShortcut = new ShortcutDto("Domicile", 2222, 1111);
         //Action
         repository.add(myShortcut);
         Mockito.verify(mock, times(1)).update(any(ShortcutDto.class));
@@ -158,7 +158,7 @@ class ShortcutRepositoryTest {
         System.out.println("testAddNotExist");
         //Arrange
         ShortcutRepository repository = new ShortcutRepository(mock);
-        ShortcutDto myShortcut = new ShortcutDto("Test", "MERODE", "PLOPSA");
+        ShortcutDto myShortcut = new ShortcutDto("Test", 2222, 1111);
         //Action
         repository.add(myShortcut);
         //Assert
@@ -184,7 +184,7 @@ class ShortcutRepositoryTest {
         System.out.println("testRemoveExist");
         //Arrange
         ShortcutRepository repository = new ShortcutRepository(mock);
-        ShortcutDto myShortcut = new ShortcutDto("Domicile", "MERODE", "PLOPSA");
+        ShortcutDto myShortcut = new ShortcutDto("Domicile", 1111, 2222);
         //Action
         repository.remove(myShortcut.getKey());
         //Assert

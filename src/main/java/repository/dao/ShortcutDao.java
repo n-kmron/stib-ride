@@ -34,8 +34,8 @@ public class ShortcutDao implements Dao<String, ShortcutDto>{
             int count = 0;
             while (result.next()) {
                 String name = result.getString(1);
-                String source = result.getString(2);
-                String destination = result.getString(3);
+                int source = result.getInt(2);
+                int destination = result.getInt(3);
                 dto =  new ShortcutDto(name, source, destination);
                 count++;
             }
@@ -58,8 +58,8 @@ public class ShortcutDao implements Dao<String, ShortcutDto>{
             ResultSet result = stmt.executeQuery(sql);
             while (result.next()) {
                 String name = result.getString(1);
-                String source = result.getString(2);
-                String destination = result.getString(3);
+                int source = result.getInt(2);
+                int destination = result.getInt(3);
                 shortcuts.add(new ShortcutDto(name, source, destination));
             }
         } catch (SQLException ex) {
@@ -80,8 +80,8 @@ public class ShortcutDao implements Dao<String, ShortcutDto>{
         String sql = "INSERT INTO SHORTCUTS(name,source,destination) values(?, ?, ?)";
         try (PreparedStatement pstmt = connexion.prepareStatement(sql)) {
             pstmt.setString(1, item.getKey());
-            pstmt.setString(2, item.getSource());
-            pstmt.setString(3, item.getDestination());
+            pstmt.setInt(2, item.getSource());
+            pstmt.setInt(3, item.getDestination());
             pstmt.executeUpdate();
 
             ResultSet result = pstmt.getGeneratedKeys();
@@ -112,9 +112,9 @@ public class ShortcutDao implements Dao<String, ShortcutDto>{
         }
         String sql = "UPDATE SHORTCUTS SET source=?,destination=? where name=?";
         try (PreparedStatement pstmt = connexion.prepareStatement(sql)) {
-            pstmt.setString(1, item.getSource());
-            pstmt.setString(2, item.getDestination());
-            pstmt.setString(1, item.getKey());
+            pstmt.setInt(1, item.getSource());
+            pstmt.setInt(2, item.getDestination());
+            pstmt.setString(3, item.getKey());
             int count = pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new RepositoryException(e.getMessage());

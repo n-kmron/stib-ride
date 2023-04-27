@@ -16,7 +16,7 @@ public class SaveShortcutFxml {
 
     private StibRide stibRide;
 
-    private List<String> stations;
+    private List<Integer> stations;
 
     private Stage stage;
 
@@ -24,7 +24,7 @@ public class SaveShortcutFxml {
         this.stibRide = stibRide;
     }
 
-    public void setStations(String source, String destination) {
+    public void setStations(int source, int destination) {
         this.stations = new ArrayList<>();
         stations.add(source);
         stations.add(destination);

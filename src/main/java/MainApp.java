@@ -1,9 +1,15 @@
+import api.ServiceGenerator;
+import api.WaitingTimeApi;
+import api.format.WaitingTimeResponse;
 import config.ConfigManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import retrofit2.Call;
+import retrofit2.Response;
+
 import java.io.IOException;
 
 public class MainApp extends Application {
@@ -27,13 +33,8 @@ public class MainApp extends Application {
         try {
             ConfigManager.getInstance().load();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
         launch(args);
     }
-
-    // FIXME : gérer les bugs relatifs aux combobox
-    // FIXME : faire un plus bel affichage pour les load et save shortcut
-    // TODO : add the next metro
-    // TODO : stations en nééerlandais
 }

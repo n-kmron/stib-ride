@@ -1,5 +1,7 @@
 package view;
 
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -7,12 +9,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
+import model.Language;
+import model.MetroTime;
 import model.Node;
 import model.StibRide;
 import org.controlsfx.control.SearchableComboBox;
@@ -20,6 +22,7 @@ import repository.StationRepository;
 import repository.dto.StationDto;
 import utils.Observer;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +34,12 @@ public class FxmlController implements Observer {
     private String s;
 
     private String d;
+
+    private Language language;
+
+    private Node source;
+
+    private Node destination;
     @FXML
     private TableView tableview;
 
@@ -50,17 +59,22 @@ public class FxmlController implements Observer {
     @FXML
     private SearchableComboBox<String> destinationStation = new SearchableComboBox<>();
 
+    @FXML
+    private RadioMenuItem frOpt;
 
-    public void initialize() {
-        stibRide = new StibRide();
-        stibRide.addObserver(this);
+    @FXML
+    private RadioMenuItem nlOpt;
 
-        //initialize the tableview
-        c1.setCellValueFactory(new PropertyValueFactory<>("name"));
-        c2.setCellValueFactory(new PropertyValueFactory<>("line"));
+    @FXML
+    private TextField first_arrival;
 
+    @FXML
+    private TextField second_arrival;
+
+
+    private void setComboBoxValues() {
         //give list with all the stations' name
-        StationRepository stationRepository = new StationRepository();
+        StationRepository stationRepository = new StationRepository(language);
         List<StationDto> stations = stationRepository.getAll();
         List<String> stringifyStations = new ArrayList<>();
         for(StationDto station : stations) {
@@ -73,18 +87,69 @@ public class FxmlController implements Observer {
         destinationList = FXCollections.observableArrayList();
         destinationList.addAll(stringifyStations);
         sourceStation.setItems(sourceList);
-        sourceStation.setValue("DE BROUCKERE");
         destinationStation.setItems(destinationList);
-        destinationStation.setValue("DE BROUCKERE");
+        addListenerOnComboBox();
+    }
 
-        //add a listener on the combobox to recover at any time the name of the current source and destination stations
+    /**
+     * Reset the listeners on combo boxes to refresh with the language settings
+     */
+    private void removeListenerOnComboBox() {
+        ChangeListener<String> listenerSource = (observable, oldValue, newValue) -> {
+            try {
+                s = newValue;
+                source = stibRide.findNode(stibRide.findNode(s).getId());
+            } catch (Exception e) {
+            }
+        };
+        ChangeListener<String> listenerDest = (observable, oldValue, newValue) -> {
+            try {
+                d = newValue;
+                destination = stibRide.findNode(stibRide.findNode(d).getId());
+            } catch (Exception e) {
+            }
+        };
+        sourceStation.getSelectionModel().selectedItemProperty().removeListener(listenerSource);
+        destinationStation.getSelectionModel().selectedItemProperty().removeListener(listenerDest);
+    }
+    /**
+     * Add a listener on the combobox to recover at any time the name of the current source and destination stations
+     */
+    private void addListenerOnComboBox() {
+        removeListenerOnComboBox();
         sourceStation.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            s = newValue;
+            try {
+                s = newValue;
+                source = stibRide.findNode(stibRide.findNode(s).getId());
+            } catch (Exception e) {
+            }
         });
 
         destinationStation.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            d = newValue;
+            try {
+                d = newValue;
+                destination = stibRide.findNode(stibRide.findNode(d).getId());
+            } catch (Exception e) {
+            }
         });
+    }
+
+    public void initialize() {
+        stibRide = new StibRide();
+        stibRide.addObserver(this);
+
+        source = stibRide.findNode("DE BROUCKERE");
+        destination = stibRide.findNode("DE BROUCKERE");
+
+        //initialize the tableview
+        c1.setCellValueFactory(new PropertyValueFactory<>("name"));
+        c2.setCellValueFactory(new PropertyValueFactory<>("line"));
+
+        setComboBoxValues();
+        sourceStation.setValue("DE BROUCKERE");
+        destinationStation.setValue("DE BROUCKERE");
+
+        language = Language.FR;
     }
 
 
@@ -93,17 +158,10 @@ public class FxmlController implements Observer {
      */
     @FXML
     public void handleFind(ActionEvent e) {
-        try {
-            if (s != null && d != null) {
-                String sourceAsString = s;
-                String destAsString = d;
-                Node source = stibRide.findNode(sourceAsString);
-                Node destination = stibRide.findNode(destAsString);
-                stibRide.setActivePath(source, destination);
-            }
-        } catch(Exception ex) {
-            System.out.println("The stations given are wrong");;
-        }
+        source = stibRide.findNode(source.getId());
+        destination = stibRide.findNode(destination.getId());
+        stibRide.setActivePath(source, destination);
+        stibRide.setNextArrival(source);
     }
 
     /**
@@ -130,7 +188,7 @@ public class FxmlController implements Observer {
 
             SaveShortcutFxml controller = loader.getController();
             controller.setStibRide(stibRide);
-            controller.setStations(s, d);
+            controller.setStations(source.getId(), destination.getId());
             controller.setStage(stage);
 
             stage.showAndWait();
@@ -185,16 +243,50 @@ public class FxmlController implements Observer {
         stage.showAndWait();
     }
 
+    /**
+     * Select a language for the app
+     */
+    @FXML
+    public void handleChangeLanguage(ActionEvent e) throws IOException {
+        if(frOpt.isSelected()) {
+            this.language = Language.FR;
+            stibRide.changeLanguage(Language.FR);
+        }
+        else {
+            this.language = Language.NL;
+            stibRide.changeLanguage(Language.NL);
+        }
+        stibRide.setActivePath(stibRide.findNode(source.getId()), stibRide.findNode(destination.getId()));
+    }
+
     @Override
     public void update() {
-        List<Node> path = stibRide.getActivePath();
-        if(path != null) {
-            tableview.getItems().clear();
-            for(Node node : path) {
-                LineViewer line = new LineViewer(node.getName(), node.getLines());
-                tableview.getItems().add(line);
+        Platform.runLater(() -> {
+            setComboBoxValues();
+            List<Node> path = stibRide.getActivePath();
+            if(path != null) {
+                tableview.getItems().clear();
+                for(Node node : path) {
+                    LineViewer line = new LineViewer(node.getName(), node.getLines());
+                    tableview.getItems().add(line);
+                }
+                MetroTime[] next = stibRide.getNextArrivals();
+
+                String first = next[0].getDuration() + "min - [" + next[0].getLine() + "]";
+                first_arrival.setText(first);
+                if(next.length > 1) {
+                    String second = next[1].getDuration() + "min - [" + next[1].getLine() + "]";
+                    second_arrival.setText(second);
+                } else {
+                    second_arrival.setText("/");
+                }
+            } else {
+                System.out.println("the path is null");
             }
-        } else {
-            System.out.println("the path is null");
-        }    }
+        });
+    }
+
+    @Override
+    public void update(Object o) {
+    }
 }

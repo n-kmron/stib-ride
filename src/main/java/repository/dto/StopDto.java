@@ -25,7 +25,7 @@ public class StopDto extends Dto<Pair<Integer,Integer>> {
     }
 
     /**
-     * Pour créer une clé composée, on utilise une paire
+     * To create a composed-key, a pair is used
      * @return
      */
     @Override
@@ -42,10 +42,6 @@ public class StopDto extends Dto<Pair<Integer,Integer>> {
 
     public Integer getStation() {
         return station;
-    }
-
-    public String getStationName() {
-        return stationName;
     }
 
     @Override

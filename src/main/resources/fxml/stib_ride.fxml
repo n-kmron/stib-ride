@@ -7,9 +7,11 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -28,6 +30,16 @@
             <MenuItem mnemonicParsing="false" onAction="#handleMenuExit" text="Quit" />
           </items>
         </Menu>
+            <Menu mnemonicParsing="false" text="Options">
+               <items>
+                  <RadioMenuItem fx:id="frOpt" mnemonicParsing="false" onAction="#handleChangeLanguage" selected="true" text="FR">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="language" />
+                     </toggleGroup>
+                  </RadioMenuItem>
+                  <RadioMenuItem fx:id="nlOpt" mnemonicParsing="false" onAction="#handleChangeLanguage" text="NL" toggleGroup="$language" />
+               </items>
+            </Menu>
         <Menu mnemonicParsing="false" text="Help">
           <items>
             <MenuItem mnemonicParsing="false" onAction="#handleMenuHelp" text="About Stib Ride" />
@@ -39,19 +51,15 @@
       <children>
             <VBox layoutX="-7.0" prefHeight="463.0" prefWidth="815.0">
                <children>
-                  <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" pannable="true" prefHeight="188.0" prefWidth="815.0" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
-                    <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="190.0" prefWidth="813.0">
-                           <children>
-                              <ImageView fitHeight="248.0" fitWidth="1079.0" layoutX="-44.0" layoutY="-12.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../sprites/metro.gif" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </AnchorPane>
-                    </content>
-                  </ScrollPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="151.0" prefWidth="815.0">
+                     <children>
+                        <ImageView fitHeight="181.0" fitWidth="815.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../sprites/metro.gif" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </AnchorPane>
                   <HBox alignment="CENTER" prefHeight="173.0" prefWidth="655.0">
                      <children>
                         <VBox alignment="CENTER" prefHeight="235.0" prefWidth="292.0" spacing="5.0">
@@ -78,16 +86,26 @@
                               <Insets right="100.0" />
                            </padding>
                         </VBox>
-                        <HBox prefHeight="235.0" prefWidth="277.0">
+                        <VBox prefHeight="215.0" prefWidth="297.0">
                            <children>
-                              <TableView fx:id="tableview" focusTraversable="false" prefHeight="160.0" prefWidth="280.0">
+                              <TableView fx:id="tableview" focusTraversable="false" prefHeight="221.0" prefWidth="297.0">
                                 <columns>
-                                  <TableColumn fx:id="c1" prefWidth="131.0" text="Stations" />
-                                  <TableColumn fx:id="c2" prefWidth="148.0" text="Lignes" />
+                                  <TableColumn fx:id="c1" prefWidth="149.0" text="Stations" />
+                                  <TableColumn fx:id="c2" prefWidth="147.0" text="Lignes" />
                                 </columns>
                               </TableView>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label prefHeight="17.0" prefWidth="125.0" text="Next metros arrival  :" />
+                                    <TextField fx:id="first_arrival" editable="false" prefHeight="26.0" prefWidth="82.0" />
+                                    <TextField fx:id="second_arrival" editable="false" prefHeight="26.0" prefWidth="81.0" />
+                                 </children>
+                                 <opaqueInsets>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </opaqueInsets>
+                              </HBox>
                            </children>
-                        </HBox>
+                        </VBox>
                      </children>
                      <padding>
                         <Insets bottom="30.0" left="50.0" right="50.0" top="30.0" />

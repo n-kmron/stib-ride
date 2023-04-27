@@ -3,24 +3,36 @@ package model;
 import java.util.*;
 
 /**
- * A node can be described with a name, a LinkedList in reference to the shortestPath,
- * a distance from the source, and an adjacency list named adjacentNodes:
+ * Implements a simple node representing a metro station
+ *
+ * N.B a node can be described with a name, a LinkedList in reference to the shortestPath,
+ * a distance from the source, and an adjacency list named adjacentNodes.
  */
 public class Node {
 
     private String name;
 
+    private int id;
+
+    /**
+     * Each metro line that pass by this node
+     */
     private List<Integer> lines;
 
     private List<Node> shortestPath = new LinkedList<>();
 
     private Integer distance = Integer.MAX_VALUE;
 
-    //The adjacentNodes attribute is used to associate immediate neighbors with edge length.
-    // This is a simplified implementation of an adjacency list,
-    // which is more suitable for the Dijkstra algorithm than the adjacency matrix.
+    /*The adjacentNodes attribute is used to associate immediate neighbors with edge length.
+    This is a simplified implementation of an adjacency list,
+    which is more suitable for the Dijkstra algorithm than the adjacency matrix.*/
     Map<Node, Integer> adjacentNodes = new HashMap<>();
 
+    /**
+     * Adds a neighbor for this node
+     * @param destination the new neighbor
+     * @param distance the distance between the two nodes
+     */
     public void addDestination(Node destination, int distance) {
         adjacentNodes.put(destination, distance);
     }
@@ -28,12 +40,29 @@ public class Node {
     public Node(String name) {
         this.name = name;
         this.lines = new ArrayList<>();
+        this.id = 0;
+    }
+
+    public Node(String name, int id) {
+        this.name = name;
+        this.lines = new ArrayList<>();
+        this.id = id;
+    }
+
+    public Node(int id) {
+        this.name = "";
+        this.lines = new ArrayList<>();
+        this.id = id;
     }
 
     // getters and setters
 
     public String getName() {
         return name;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public List<Integer> getLines() {
