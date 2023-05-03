@@ -21,10 +21,10 @@ Launch the app and go to the `Help` menu
 
 ## Remarks
 
-* The data of the App is stored with a `SQL database` created via STIB API v4 data
+* The data of the App is stored with a `SQL database` created via [STIB API v4](https://data.stib-mivb.brussels/explore/dataset/waiting-time-rt-production/table/) data
 * Shortcuts are also stored in a database to keep them locally
 * Searching stations bar is implemented with JavaFX Searchable ComboBox external lib. and the listener has some display bugs.
-* Real-time arrivals using STIB API v4
+* Real-time arrivals using [STIB API v4](https://data.stib-mivb.brussels/explore/dataset/waiting-time-rt-production/table/)
 
 ## Code 
 
