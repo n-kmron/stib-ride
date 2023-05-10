@@ -42,3 +42,9 @@ Launch the app and go to the `Help` menu
 ## Author
 
 * Cameron Noupoue
+
+## Credits
+
+Project devised and created during my studies at the École Supérieure d'Informatique (ESI), Brussels.
+
+
