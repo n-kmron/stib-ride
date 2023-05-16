@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import org.controlsfx.control.SearchableComboBox?>
 
-<VBox prefHeight="490.0" prefWidth="805.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.FxmlController">
+<VBox xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.FxmlController">
   <children>
     <MenuBar prefHeight="20.0" prefWidth="806.0" VBox.vgrow="NEVER">
       <menus>
@@ -47,22 +47,22 @@
         </Menu>
       </menus>
     </MenuBar>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="416.0" prefWidth="808.0" style="-fx-background-color: rgba(218,241,255,255);" VBox.vgrow="ALWAYS">
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" style="-fx-background-color: rgba(218,241,255,255);" VBox.vgrow="ALWAYS">
       <children>
-            <VBox layoutX="-7.0" prefHeight="463.0" prefWidth="815.0">
+            <VBox layoutX="-7.0">
                <children>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="151.0" prefWidth="815.0">
+                <AnchorPane>
                      <children>
-                        <ImageView fitHeight="181.0" fitWidth="815.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="181.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../sprites/metro.gif" />
                            </image>
                         </ImageView>
                      </children>
                   </AnchorPane>
-                  <HBox alignment="CENTER" prefHeight="173.0" prefWidth="655.0">
+                  <HBox alignment="CENTER">
                      <children>
-                        <VBox alignment="CENTER" prefHeight="235.0" prefWidth="292.0" spacing="5.0">
+                        <VBox alignment="CENTER" spacing="5.0">
                            <children>
                               <ImageView fitHeight="76.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -86,7 +86,7 @@
                               <Insets right="100.0" />
                            </padding>
                         </VBox>
-                        <VBox prefHeight="215.0" prefWidth="297.0">
+                        <VBox>
                            <children>
                               <TableView fx:id="tableview" focusTraversable="false" prefHeight="221.0" prefWidth="297.0">
                                 <columns>

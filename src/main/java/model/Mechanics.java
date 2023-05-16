@@ -93,8 +93,13 @@ public class Mechanics {
                         stations.get(getStops.get(i).getStation()).adjacentNodes.put(stations.get(getStops.get(i-1).getStation()), 1);
                     }
                 }
-
             }
+        }
+
+        //elisabeth (8472) station and simonis (8764) are in the same place, we have to deal with this
+        if(stations.containsKey(8764) && stations.containsKey(8472)) {
+            stations.get(8764).addDestination(stations.get(8472), 0);
+            stations.get(8472).addDestination(stations.get(8764), 0);
         }
         return stations;
     }
@@ -129,7 +134,7 @@ public class Mechanics {
 
         unsettledNodes.add(source);
 
-        while (unsettledNodes.size() != 0 && !settledNodes.contains(destination)) {
+        while (unsettledNodes.size() != 0) {
             Node currentNode = getLowestDistanceNode(unsettledNodes);
             unsettledNodes.remove(currentNode);
             for (Map.Entry< Node, Integer> adjacencyPair: currentNode.getAdjacentNodes().entrySet()) {
@@ -142,9 +147,13 @@ public class Mechanics {
             }
             settledNodes.add(currentNode);
         }
+
         List<Node> finalWay = destination.getShortestPath();
+
+        //add the destination node to the path
         finalWay.add(destination);
         destination.setShortestPath(finalWay);
+
         return destination.getShortestPath();
     }
 
