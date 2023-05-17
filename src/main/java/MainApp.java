@@ -20,6 +20,7 @@ public class MainApp extends Application {
                     ConfigManager.getInstance().getProperties("app.name") + " (" +
                     ConfigManager.getInstance().getProperties("app.version") + ")";
             stage.setTitle(title);
+            stage.setResizable(false);
 
             Scene scene = new Scene(root);
             stage.setScene(scene);
